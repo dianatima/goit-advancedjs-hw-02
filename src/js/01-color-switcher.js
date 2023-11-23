@@ -4,6 +4,8 @@ const refs = {
   stopBtn: document.querySelector('button[data-stop]'),
 };
 
+refs.stopBtn.setAttribute('disabled', 'disabled');
+
 refs.startBtn.addEventListener('click', onStartBtnClick);
 refs.stopBtn.addEventListener('click', onStopBtnClick);
 

@@ -9,6 +9,7 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
 const refs = {
+  input: document.querySelector('#datetime-picker'),
   startBtn: document.querySelector('button[data-start]'),
   days: document.querySelector('span[data-days]'),
   hours: document.querySelector('span[data-hours]'),
@@ -46,12 +47,14 @@ refs.startBtn.addEventListener('click', onStartBtnClick);
 
 function onStartBtnClick() {
   refs.startBtn.setAttribute('disabled', 'disabled');
+  refs.input.setAttribute('disabled', 'disabled');
   const timerId = setInterval(() => {
     currentDate = new Date();
     deltaTime = selectedDate - currentDate;
     const time = convertMs(deltaTime);
     if (deltaTime < 1000) {
       clearInterval(timerId);
+      refs.input.removeAttribute('disabled');
     }
     updateTimerFace(time);
   }, 1000);
