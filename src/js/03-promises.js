@@ -20,33 +20,34 @@ function onFormSubmit(e) {
   let promiseDelay = delay;
 
   for (let i = 1; i <= amount; i += 1) {
-    createPromise(i, promiseDelay);
+    createPromise(i, promiseDelay)
+      .then(({ position, delay }) =>
+        iziToast.success({
+          message: `✅ Fulfilled promise ${position} in ${delay}ms`,
+          position: 'topRight',
+        })
+      )
+      .catch(({ position, delay }) =>
+        iziToast.error({
+          message: `❌ Rejected promise ${position} in ${delay}ms`,
+          position: 'topRight',
+        })
+      );
     promiseDelay += step;
   }
+  form.reset();
 }
 
 function createPromise(position, delay) {
-  const promise = new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const shouldResolve = Math.random() > 0.3;
 
     setTimeout(() => {
       if (shouldResolve) {
-        resolve(`✅ Fulfilled promise ${position} in ${delay}ms`);
+        resolve({ position, delay });
       } else {
-        reject(`❌ Rejected promise ${position} in ${delay}ms`);
+        reject({ position, delay });
       }
     }, delay);
-  })
-    .then(x =>
-      iziToast.success({
-        message: x,
-        position: 'topRight',
-      })
-    )
-    .catch(error =>
-      iziToast.error({
-        message: error,
-        position: 'topRight',
-      })
-    );
+  });
 }
